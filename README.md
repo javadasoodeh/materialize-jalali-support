@@ -171,5 +171,12 @@ Here’s a basic example of how to use the Jalali datepicker:
 </html>
 ```
 
+### Output
+<p align="center">
+  <a href="#">
+    <img src="https://github.com/javadasoodeh/materialize-jalali-support/blob/v1-dev/images/jalali-output.png" width="500">
+  </a>
+</p>
+
 ## Copyright and license
 Code Copyright 2018 Materialize. Code released under the MIT license.
