@@ -147,20 +147,26 @@ Here’s a basic example of how to use the Jalali datepicker:
                     clear: "پاک کردن",
                     done: "تأیید"
                 },
-                onDraw: function () {
-                    let todayButton = document.querySelector('.datepicker-today-button');
+                onDraw: function (instance) {
+                    // Find the footer specific to the modal of this datepicker instance
+                    const modalFooter = instance.modalEl.querySelector('.datepicker-footer');
+                    // Add the "Go to Today" button if it doesn't exist
+                    let todayButton = instance.modalEl.querySelector('.datepicker-today-button');
                     if (!todayButton) {
                         todayButton = document.createElement('button');
-                        todayButton.className = 'datepicker-today-button btn-flat green-text';
-                        todayButton.textContent = 'برو به امروز';
-                        const modalFooter = document.querySelector('.datepicker-footer');
-                        modalFooter.appendChild(todayButton);
+                        todayButton.setAttribute("data-id", instance.el.getAttribute("id"))
+                        todayButton.className = 'datepicker-today-button btn-flat green-text text-darken-2';
+                        todayButton.textContent = 'برو به امروز';  // "Go to Today" in Persian
+                        todayButton.style.width = '50%';
+                        
+                        modalFooter.appendChild(todayButton)
+
                         todayButton.addEventListener('click', function () {
-                            const datepickerElem = document.querySelector('#datepicker');
-                            const instance = M.Datepicker.getInstance(datepickerElem);
+                            const datepickerElems = document.querySelector(`#${this.getAttribute("data-id")}`);
+                            const instance = M.Datepicker.getInstance(datepickerElems);
                             const todayDate = new Date();
                             instance.setDate(todayDate);
-                            instance.gotoDate(todayDate);
+                            instance.gotoDate(todayDate);  // Navigate to today's date
                         });
                     }
                 }
