@@ -1,13 +1,14 @@
+
 <p align="center">
   <a href="http://materializecss.com/">
     <img src="http://materializecss.com/res/materialize.svg" width="150">
   </a>
 </p>
 
-<h3 align="center">MaterializeCSS</h3>
+<h3 align="center">MaterializeCSS with Jalali Datepicker Support</h3>
 
 <p align="center">
-  Materialize, a CSS Framework based on material design.
+  Materialize, a CSS Framework based on material design, now with Jalali datepicker support.
   <br>
   <a href="http://materializecss.com/"><strong>-- Browse the docs --</strong></a>
   <br>
@@ -39,6 +40,7 @@
 - [Changelog](#changelog)
 - [Testing](#testing)
 - [Contributing](#contributing)
+- [Changes for Jalali Datepicker Support](#jalali-datepicker)
 - [Copyright and license](#copyright-and-license)
 
 ## Quickstart:
@@ -86,6 +88,88 @@ We use Jasmine as our testing framework and we're trying to write a robust test 
 
 ## Contributing
 Check out the [CONTRIBUTING document](CONTRIBUTING.md) in the root of the repository to learn how you can contribute. You can also browse the [help-wanted](https://github.com/Dogfalo/materialize/labels/help-wanted) tag in our issue tracker to find things to do.
+
+## Changes for Jalali Datepicker Support
+
+This fork of MaterializeCSS includes added support for the Jalali (Persian) calendar in the datepicker component. 
+
+### How to Use:
+- Include the `jalaali.min.js` script before MaterializeCSS:
+  
+```html
+<script src="path/to/jalaali.min.js"></script>
+```
+
+- Initialize the datepicker with the `calendarType` set to `'jalali'`:
+
+```javascript
+M.Datepicker.init(elems, {
+    calendarType: 'jalali', // Switch between Jalali or Gregorian
+    format: 'yyyy-mm-dd',  // Jalali date format
+    i18n: {
+        cancel: "لغو",
+        clear: "پاک کردن",
+        done: "تأیید",
+        previousMonth: "‹",
+        nextMonth: "›",
+        months: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
+            "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"],
+        weekdays: ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه",
+            "پنجشنبه", "جمعه", "شنبه"],
+    }
+});
+```
+
+### Example:
+Here’s a basic example of how to use the Jalali datepicker:
+
+```html
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>Persian Datepicker with Materialize CSS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+    <input type="text" class="datepicker" id="datepicker">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.2.7/dist/jalaali.min.js"></script>
+    <script src="dist/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const elems = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(elems, {
+                calendarType: 'jalali',
+                format: 'yyyy-mm-dd',
+                i18n: {
+                    cancel: "لغو",
+                    clear: "پاک کردن",
+                    done: "تأیید"
+                },
+                onDraw: function () {
+                    let todayButton = document.querySelector('.datepicker-today-button');
+                    if (!todayButton) {
+                        todayButton = document.createElement('button');
+                        todayButton.className = 'datepicker-today-button btn-flat green-text';
+                        todayButton.textContent = 'برو به امروز';
+                        const modalFooter = document.querySelector('.datepicker-footer');
+                        modalFooter.appendChild(todayButton);
+                        todayButton.addEventListener('click', function () {
+                            const datepickerElem = document.querySelector('#datepicker');
+                            const instance = M.Datepicker.getInstance(datepickerElem);
+                            const todayDate = new Date();
+                            instance.setDate(todayDate);
+                            instance.gotoDate(todayDate);
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
 
 ## Copyright and license
 Code Copyright 2018 Materialize. Code released under the MIT license.
